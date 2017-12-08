@@ -169,18 +169,20 @@ class XtextGeneratorLanguage extends CompositeGeneratorFragment2 implements IXte
 	override initialize(Injector injector) {
 		fragments.addAll(0, implicitFragments)
 		injector.injectMembers(this)
-		if (resourceSet === null)
+		if (resourceSet === null) {
 			resourceSet = resourceSetProvider.get()
+		}
 		resourceSetInitializer.initialize(resourceSet, referencedResources)
 		
 		if (!resourceSet.resources.isEmpty) {
 			installIndex()
 			for (var i = 0, var size = resourceSet.resources.size; i < size; i++) {
 				val res = resourceSet.resources.get(i)
-				if (res.getContents().isEmpty())
+				if (res.getContents().isEmpty()) {
 					XtextGeneratorLanguage.LOG.error("Error loading '" + res.getURI() + "'")
-				else if (!res.getErrors().isEmpty())
-					XtextGeneratorLanguage.LOG.error("Error loading '" + res.getURI() + "':\n" + Joiner.on('\n').join(res.getErrors()))	
+				} else if (!res.getErrors().isEmpty()) {
+					XtextGeneratorLanguage.LOG.error("Error loading '" + res.getURI() + "':\n" + Joiner.on('\n').join(res.getErrors()))
+				}
 			}
 			EcoreUtil.resolveAll(resourceSet)
 		}
@@ -241,10 +243,11 @@ class XtextGeneratorLanguage extends CompositeGeneratorFragment2 implements IXte
 				override add(Diagnostic diagnostic) {
 					if (diagnostic.severity == Diagnostic.ERROR) {
 						val grammarName = "Validation Error in " + grammar.name + ": "
-						if (diagnostic.exception === null)
+						if (diagnostic.exception === null) {
 							throw new IllegalStateException(grammarName + diagnostic.message)
-						else
+						} else {
 							throw new IllegalStateException(grammarName + diagnostic.message, diagnostic.exception)
+						}
 					}
 				}
 
@@ -266,8 +269,9 @@ class XtextGeneratorLanguage extends CompositeGeneratorFragment2 implements IXte
 	
 	protected def void validateAllImports(Grammar grammar) {
 		for (amd : GrammarUtil.allMetamodelDeclarations(grammar)) {
-			if (amd instanceof ReferencedMetamodel)
+			if (amd instanceof ReferencedMetamodel) {
 				validateReferencedMetamodel(amd)
+			}
 		}
 	}
 

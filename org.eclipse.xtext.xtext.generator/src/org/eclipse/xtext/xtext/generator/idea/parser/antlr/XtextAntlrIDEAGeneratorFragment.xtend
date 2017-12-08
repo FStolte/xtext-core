@@ -18,8 +18,9 @@ class XtextAntlrIDEAGeneratorFragment extends AbstractAntlrGeneratorFragment2 {
 	@Inject extension PsiGrammarNaming
 
 	override protected doGenerate() {
-		if (!projectConfig.ideaPlugin.enabled)
+		if (!projectConfig.ideaPlugin.enabled) {
 			return;
+		}
 		val fsa = projectConfig.ideaPlugin.srcGen
 		generator.generate(grammar, options, fsa)
 

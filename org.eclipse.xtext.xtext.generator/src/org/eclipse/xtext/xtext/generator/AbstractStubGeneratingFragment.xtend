@@ -38,10 +38,11 @@ abstract class AbstractStubGeneratingFragment extends AbstractXtextGeneratorFrag
 	}
 	
 	def boolean isGenerateXtendStub() {
-		if (generateXtendStub.isSet)
+		if (generateXtendStub.isSet) {
 			generateXtendStub.get
-		else
+		} else {
 			preferXtendStubs
+		}
 	}
 	
 	def void setGenerateXtendStub(boolean generateXtendStub) {

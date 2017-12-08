@@ -126,18 +126,25 @@ import org.eclipse.xtext.xtext.generator.xbase.XtypeGeneratorFragment2
 	}
 	
 	override initialize(Injector injector) {
-		if (!formatter.getGenerateStub.isSet)
+		if (!formatter.getGenerateStub.isSet) {
 			formatter.generateStub = false
-		if (!commonTypesSupport.onlyEnabledIfGrammarIsUsed.isSet)
+		}
+		if (!commonTypesSupport.onlyEnabledIfGrammarIsUsed.isSet) {
 			commonTypesSupport.onlyEnabledIfGrammarIsUsed = true
-		if (!webSupport.framework.isSet)
+		}
+		if (!webSupport.framework.isSet) {
 			webSupport.framework = 'Ace'
-		if (!webSupport.generateServlet.isSet)
+		}
+		if (!webSupport.generateServlet.isSet) {
 			webSupport.generateServlet = true
-		if (!webSupport.generateJettyLauncher.isSet)
+		}
+		if (!webSupport.generateJettyLauncher.isSet) {
 			webSupport.generateJettyLauncher = true
-		if (!webSupport.generateHtmlExample.isSet)
+		}
+		if (!webSupport.generateHtmlExample.isSet) {
 			webSupport.generateHtmlExample = true
+		}
+			
 		super.initialize(injector)
 	}
 	

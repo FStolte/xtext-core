@@ -128,8 +128,9 @@ class GrammarAccessExtensions {
 		val builder = new StringBuilder
 		for (c : text.toCharArray) {
 			val n = getUnicodeName(c)
-			if (n !== null)
+			if (n !== null) {
 				builder.append(n + ' ')
+			}
 		}
 		return toJavaIdentifierSegmentInt(builder.toString.toLowerCase.trim, isFirst, true)
 	}
@@ -149,14 +150,16 @@ class GrammarAccessExtensions {
 		for (c : text.toCharArray) {
 			val valid = c.isValidJavaLatinIdentifier(start)
 			if (valid) {
-				if (start)
+				if (start) {
 					builder.append(if (uppercaseFirst) c.toUpperCase else c.toLowerCase)
-				else
+				} else {
 					builder.append(if (up) c.toUpperCase else c)
+				}
 				up = false
 				start = false
-			} else
+			} else {
 				up = true
+			}
 		}
 		return builder.toString
 	}
@@ -200,8 +203,9 @@ class GrammarAccessExtensions {
 	 */
 	def String gaElementIdentifier(AbstractElement element) {
 		try {
-			if (element === null)
+			if (element === null) {
 				return 'null'
+			}
 			val result = new ArrayList<String>
 			result.addAll(element.elementDescription)
 			result.add(element.elementTypeDescription)
@@ -234,14 +238,17 @@ class GrammarAccessExtensions {
 			RuleCall:
 				r += ele.rule.name
 			Action: {
-				if (ele.type?.classifier !== null)
+				if (ele.type?.classifier !== null) {
 					r += ele.type.classifier.name
-				if (!ele.feature.nullOrEmpty)
+				}
+				if (!ele.feature.nullOrEmpty) {
 					r += ele.feature
+				}
 			}
 			CrossReference:
-				if (ele.type?.classifier !== null)
+				if (ele.type?.classifier !== null) {
 					r += ele.type.classifier.name
+				}
 			EnumLiteralDeclaration:
 				r += ele.enumLiteral.name
 		}
@@ -249,10 +256,11 @@ class GrammarAccessExtensions {
 	}
 
 	private def String getElementTypeDescription(AbstractElement ele) {
-		if (ele instanceof RuleCall)
+		if (ele instanceof RuleCall) {
 			ele.rule.eClass.name + 'Call'
-		else
+		} else {
 			ele.eClass.name
+		}
 	}
 
 	private def String getElementPath(AbstractElement ele) {

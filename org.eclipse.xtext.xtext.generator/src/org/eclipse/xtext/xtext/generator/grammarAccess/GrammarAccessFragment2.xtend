@@ -104,7 +104,7 @@ class GrammarAccessFragment2 extends AbstractXtextGeneratorFragment {
 		val Map<String, Object> saveOptions = newHashMap
 		if (resource instanceof XMLResource) {
 			resource.XMLVersion = xmlVersion ?: '1.0'
-		} else if (resource instanceof BinaryResourceImpl){
+		} else if (resource instanceof BinaryResourceImpl) {
 			saveOptions.put(BinaryResourceImpl.OPTION_VERSION, BinaryResourceImpl.BinaryIO.Version.VERSION_1_1)
 			saveOptions.put(BinaryResourceImpl.OPTION_STYLE_DATA_CONVERTER, true)
 		}
@@ -135,13 +135,15 @@ class GrammarAccessFragment2 extends AbstractXtextGeneratorFragment {
 						topMost = topMost.ESuperPackage
 					}
 					if (packResource.contents.contains(topMost) && packResource.contents.size == 1) {
-						if (!topMost.EClassifiers.empty)
+						if (!topMost.EClassifiers.empty) {
 							packResource.setURI(URI.createURI(topMost.nsURI))
-						else
+						} else {
 							moveSubpackagesToNewResource(topMost, resource.resourceSet)
+						}
 					}
-					if (!topMost.eResource.URI.toString.equals(topMost.nsURI)) 
+					if (!topMost.eResource.URI.toString.equals(topMost.nsURI)) {
 						movePackageToNewResource(topMost, resource.resourceSet)
+					}
 				}
 			}
 		}
@@ -373,10 +375,11 @@ class GrammarAccessFragment2 extends AbstractXtextGeneratorFragment {
 	}
 	
 	protected def String loadElementParentStatement(AbstractElement ele) {
-		if (ele.eContainer instanceof AbstractElement)
+		if (ele.eContainer instanceof AbstractElement) {
 			(ele.eContainer as AbstractElement).gaElementAccessorLocalVarName 
-		else
+		} else {
 			"rule"
+		}
 	}
 	
 	/**

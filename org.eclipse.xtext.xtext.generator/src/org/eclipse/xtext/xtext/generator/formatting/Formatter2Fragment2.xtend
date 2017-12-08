@@ -50,8 +50,9 @@ import org.eclipse.xtext.util.internal.Log
 	}
 	
 	override generate() {
-		if (!isGenerateStub)
+		if (!isGenerateStub) {
 			return;
+		}
 		val StringConcatenationClient statement =
 			'''binder.bind(«IPreferenceValuesProvider».class).annotatedWith(«FormatterPreferences».class).to(«FormatterPreferenceValuesProvider».class);'''
 		new GuiceModuleAccess.BindingFactory()
@@ -69,8 +70,9 @@ import org.eclipse.xtext.util.internal.Log
 	}
 
 	protected def doGenerateStubFile() {
-		if(!isGenerateStub)
+		if(!isGenerateStub) {
 			return;
+		}
 			
 		if(isGenerateXtendStub) {
 			val xtendFile = fileAccessFactory.createXtendFile(grammar.formatter2Stub)
@@ -152,15 +154,17 @@ import org.eclipse.xtext.util.internal.Log
 
 	protected def TypeReference getStubSuperClass() {
 		val superGrammar = language.grammar.nonTerminalsSuperGrammar
-		if (superGrammar !== null)
+		if (superGrammar !== null) {
 			return superGrammar.formatter2Stub
-		else
+		} else {
 			return AbstractFormatter2.typeRef
+		}
 	}
 	
 	protected def String toVarName(ENamedElement element, String... reservedNames) {
-		if (element instanceof EReference)
+		if (element instanceof EReference) {
 			return element.EReferenceType.toVarName(reservedNames)
+		}
 		var name = element.name.toFirstLower
 		if (XtendFileAccess.XTEND_KEYWORDS.contains(name)) {
 			name = "_" + name

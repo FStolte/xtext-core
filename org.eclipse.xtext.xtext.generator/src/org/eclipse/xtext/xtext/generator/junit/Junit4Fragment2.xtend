@@ -24,10 +24,11 @@ class Junit4Fragment2 extends AbstractStubGeneratingFragment {
 	boolean skipXbaseTestingPackage
 	
 	def protected getTestingPackage() {
-		if (useDeprecatedClasses)
+		if (useDeprecatedClasses) {
 			getUiTestingPackage()
-		else
+		} else {
 			"org.eclipse.xtext.testing"
+		}
 	}
 	
 	protected def String getUiTestingPackage() {

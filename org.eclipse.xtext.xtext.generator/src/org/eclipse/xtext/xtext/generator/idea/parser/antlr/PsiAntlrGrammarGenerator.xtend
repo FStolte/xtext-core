@@ -118,7 +118,8 @@ class PsiAntlrGrammarGenerator extends AbstractAntlrGrammarWithActionsGenerator 
 	}
 	
 	override protected _dataTypeEbnf2(Keyword it, boolean supportActions) {
-		if (supportActions) '''
+		if (supportActions) {
+		'''
 			{
 				«markLeaf»
 			}
@@ -127,7 +128,7 @@ class PsiAntlrGrammarGenerator extends AbstractAntlrGrammarWithActionsGenerator 
 				«doneLeaf('kw')»
 			}
 		'''
-		else {
+		} else {
 			super._dataTypeEbnf2(it, supportActions)
 		}
 	}
@@ -166,9 +167,10 @@ class PsiAntlrGrammarGenerator extends AbstractAntlrGrammarWithActionsGenerator 
 	}
 	
 	override protected _ebnf2(Action it, AntlrOptions options, boolean supportActions) {
-		if (!supportActions)
+		if (!supportActions) {
 			return super._ebnf2(it, options, supportActions)
-		else '''
+		} else {
+		'''
 			«IF options.backtrack»
 			{
 				/* */
@@ -180,12 +182,14 @@ class PsiAntlrGrammarGenerator extends AbstractAntlrGrammarWithActionsGenerator 
 				«associateWithSemanticElement»
 			}
 		'''
+		}
 	}
 	
 	override protected _ebnf2(Keyword it, AntlrOptions options, boolean supportActions) {
-		if (!supportActions)
+		if (!supportActions) {
 			return super._ebnf2(it, options, supportActions)
-		else if(assigned) '''
+		} else if(assigned) {
+		'''
 			{
 				«markLeaf»
 			}
@@ -194,7 +198,8 @@ class PsiAntlrGrammarGenerator extends AbstractAntlrGrammarWithActionsGenerator 
 				«doneLeaf(containingAssignment.localVar(it))»
 			}
 		'''
-		else '''
+		} else {
+		'''
 			{
 				«markLeaf»
 			}
@@ -203,12 +208,14 @@ class PsiAntlrGrammarGenerator extends AbstractAntlrGrammarWithActionsGenerator 
 				«doneLeaf(localVar)»
 			}
 		'''
+		}
 	}
 	
 	override protected _ebnf2(EnumLiteralDeclaration it, AntlrOptions options, boolean supportActions) {
-		if (!supportActions)
+		if (!supportActions) {
 			return super._ebnf2(it, options, supportActions)
-		else '''
+		} else {
+		'''
 			{
 				«markLeaf»
 			}
@@ -217,6 +224,7 @@ class PsiAntlrGrammarGenerator extends AbstractAntlrGrammarWithActionsGenerator 
 				«doneLeaf(localVar)»
 			}
 		'''
+		}
 	}
 	
 	override protected _ebnf2(RuleCall it, AntlrOptions options, boolean supportActions) {
@@ -309,7 +317,8 @@ class PsiAntlrGrammarGenerator extends AbstractAntlrGrammarWithActionsGenerator 
 	}
 	
 	override protected _assignmentEbnf(CrossReference it, Assignment assignment, AntlrOptions options, boolean supportActions) {
-		if (supportActions) '''
+		if (supportActions) {
+		'''
 			«IF options.backtrack»
 			{
 				/* */
@@ -321,13 +330,16 @@ class PsiAntlrGrammarGenerator extends AbstractAntlrGrammarWithActionsGenerator 
 					$current = true;
 				}
 			}
-			«super._assignmentEbnf(it, assignment, options, supportActions)»'''
-		else
-		super._assignmentEbnf(it, assignment, options, supportActions)
+			«super._assignmentEbnf(it, assignment, options, supportActions)»
+		'''
+		} else {
+			super._assignmentEbnf(it, assignment, options, supportActions)
+		}
 	}
 	
 	override protected _assignmentEbnf(AbstractElement it, Assignment assignment, AntlrOptions options, boolean supportActions) {
-		if (supportActions) '''
+		if (supportActions) {
+		'''
 			«super._assignmentEbnf(it, assignment, options, supportActions)»
 			{
 				if (!$current) {
@@ -336,8 +348,9 @@ class PsiAntlrGrammarGenerator extends AbstractAntlrGrammarWithActionsGenerator 
 				}
 			}
 		'''
-		else
+		} else {
 			super._assignmentEbnf(it, assignment, options, supportActions)
+		}
 	}
 	
 	override protected _assignmentEbnf(RuleCall it, Assignment assignment, AntlrOptions options, boolean supportActions) {

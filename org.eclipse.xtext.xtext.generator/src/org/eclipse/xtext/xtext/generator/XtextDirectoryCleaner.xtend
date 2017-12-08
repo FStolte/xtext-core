@@ -43,8 +43,9 @@ class XtextDirectoryCleaner implements IGuiceAwareGeneratorComponent {
 	}
 
 	def void clean() {
-		if (!enabled)
+		if (!enabled) {
 			return;
+		}
 			
 		val directories = newArrayList
 		directories += (config.enabledProjects.map[srcGen] + #[config.runtime.ecoreModel]).filterNull.map[path].filter[new File(it).isDirectory]

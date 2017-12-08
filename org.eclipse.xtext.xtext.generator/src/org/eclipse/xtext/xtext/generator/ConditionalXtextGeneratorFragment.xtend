@@ -26,10 +26,11 @@ class ConditionalXtextGeneratorFragment implements IXtextGeneratorFragment {
 	boolean enabled = true
 	
 	override checkConfiguration(Issues issues) {
-		if (fragment === null)
+		if (fragment === null) {
 			issues.addError('The property \'fragment\' must be set.', this)
-		else
+		} else {
 			fragment.checkConfiguration(issues)
+		}
 	}
 	
 	override generate() {

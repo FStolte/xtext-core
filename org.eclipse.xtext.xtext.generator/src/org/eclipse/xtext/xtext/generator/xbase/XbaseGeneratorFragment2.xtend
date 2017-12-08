@@ -53,8 +53,9 @@ class XbaseGeneratorFragment2 extends AbstractXtextGeneratorFragment {
 	}
 	
 	override generate() {
-		if (!grammar.inheritsXbase)
+		if (!grammar.inheritsXbase) {
 			return;
+		}
 		
 		if (!grammar.eclipsePluginEditor.equals(grammar.eclipsePluginXbaseEditor)) {
 			contributeEditorStub()
@@ -62,10 +63,12 @@ class XbaseGeneratorFragment2 extends AbstractXtextGeneratorFragment {
 		
 		contributeRuntimeGuiceBindings()
 		contributeEclipsePluginGuiceBindings()
-		if (projectConfig.eclipsePlugin.pluginXml !== null)
+		if (projectConfig.eclipsePlugin.pluginXml !== null) {
 			contributeEclipsePluginExtensions()
-		if (generateXtendInferrer)
+		}
+		if (generateXtendInferrer) {
 			doGenerateXtendInferrer()
+		}
 		
 		if (projectConfig.runtime.manifest !== null) {
 			projectConfig.runtime.manifest.requiredBundles.addAll(#[
@@ -214,10 +217,11 @@ class XbaseGeneratorFragment2 extends AbstractXtextGeneratorFragment {
 		
 		bindingFactory.contributeTo(language.eclipsePluginGenModule)
 		
-		if (language.grammar.inheritsXbaseWithAnnotations)
+		if (language.grammar.inheritsXbaseWithAnnotations) {
 			language.eclipsePluginGenModule.superClass = 'org.eclipse.xtext.xbase.annotations.ui.DefaultXbaseWithAnnotationsUiModule'.typeRef
-		else
+		} else {
 			language.eclipsePluginGenModule.superClass = 'org.eclipse.xtext.xbase.ui.DefaultXbaseUiModule'.typeRef
+		}
 	}
 	
 	protected def doGenerateXtendInferrer() {

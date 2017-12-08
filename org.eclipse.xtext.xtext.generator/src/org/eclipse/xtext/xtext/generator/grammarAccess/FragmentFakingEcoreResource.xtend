@@ -40,8 +40,9 @@ class FragmentFakingEcoreResource extends XMIResourceImpl {
 		if (isSaving.get) {
 			if (eObject instanceof EClassifier) {
 				val result = eObject.URIFragment
-				if (result !== null)
+				if (result !== null) {
 					return result
+				}
 			}
 		}
 		return super.getURIFragment(eObject)

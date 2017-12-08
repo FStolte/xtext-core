@@ -178,8 +178,9 @@ class EMFGeneratorFragment2 extends AbstractXtextGeneratorFragment {
 	 */
 	public def void setEmfRuntimeVersion(String emfRuntimeVersion) {
 		this.emfRuntimeVersion = GenRuntimeVersion.get(emfRuntimeVersion)
-		if (this.emfRuntimeVersion === null)
+		if (this.emfRuntimeVersion === null) {
 			LOG.warn('Illegal EMF runtime version: ' + emfRuntimeVersion)
+		}
 	}
 	
 	/**
@@ -195,8 +196,9 @@ class EMFGeneratorFragment2 extends AbstractXtextGeneratorFragment {
 	 */
 	public def void setJdkLevel(String jdkLevel) {
 		this.jdkLevel = GenJDKLevel.getByName(jdkLevel)
-		if (this.jdkLevel === null)
+		if (this.jdkLevel === null) {
 			LOG.warn('Illegal JDK level: ' + jdkLevel)
+		}
 	}
 	
 	boolean bindEPackageAndEFactory = false
@@ -214,21 +216,24 @@ class EMFGeneratorFragment2 extends AbstractXtextGeneratorFragment {
 	}
 	
 	protected def String getJavaModelDirectory() {
-		if (javaModelDirectory !== null)
+		if (javaModelDirectory !== null) {
 			return javaModelDirectory
+		}	
 		val srcGenPath = projectConfig.runtime.srcGen.path
 		val rootPath = projectConfig.runtime.root.path
-		if (!rootPath.nullOrEmpty && srcGenPath.startsWith(rootPath))
+		if (!rootPath.nullOrEmpty && srcGenPath.startsWith(rootPath)) {
 			return '/' + getModelPluginID + srcGenPath.substring(rootPath.length)
+		}
 		throw new RuntimeException(
 			'Could not derive the Java model directory from the project configuration. Please set the property \'javaModelDirectory\' explicitly.')
 	}
 
 	protected def String getModelName(Grammar grammar) {
-		if (longFileNames)
+		if (longFileNames) {
 			grammar.name.replace('.', '_')
-		else
+		} else {
 			getSimpleName(grammar)
+		}
 	}
 	
 	protected def String getEcoreFilePath(Grammar grammar) {
@@ -253,8 +258,9 @@ class EMFGeneratorFragment2 extends AbstractXtextGeneratorFragment {
 	
 	protected def String getRelativePath(String pathInRoot) {
 		val projectPath = '/' + projectConfig.runtime.name
-		if (pathInRoot.startsWith(projectPath))
+		if (pathInRoot.startsWith(projectPath)) {
 			pathInRoot.substring(projectPath.length + 1)
+		}
 		else
 			pathInRoot
 	}
@@ -281,8 +287,9 @@ class EMFGeneratorFragment2 extends AbstractXtextGeneratorFragment {
 	
 	override initialize(Injector injector) {
 		super.initialize(injector)
-		if (!Resource.Factory.Registry.INSTANCE.extensionToFactoryMap.containsKey('genmodel'))
+		if (!Resource.Factory.Registry.INSTANCE.extensionToFactoryMap.containsKey('genmodel')) {
 			Resource.Factory.Registry.INSTANCE.extensionToFactoryMap.put('genmodel', new EcoreResourceFactoryImpl)
+		}
 		GenModelPackage.eINSTANCE.getGenAnnotation()
 	}
 	
@@ -417,8 +424,9 @@ class EMFGeneratorFragment2 extends AbstractXtextGeneratorFragment {
 		while (packageContentIterator.hasNext) {
 			val current = packageContentIterator.next
 			for (referenced : current.eCrossReferences) {
-				if (referenced.eIsProxy)
+				if (referenced.eIsProxy) {
 					throw new RuntimeException('Unresolved proxy: ' + referenced + ' in ' + current)
+				}
 				if (referenced instanceof EClassifier) {
 					val referencedPackage = referenced.EPackage
 					if (!generatedPackages.contains(referencedPackage))
@@ -448,10 +456,12 @@ class EMFGeneratorFragment2 extends AbstractXtextGeneratorFragment {
 		val allGenPackages = genModel.getAllGenUsedAndStaticGenPackagesWithClassifiers
 		for (genPackage: allGenPackages) {
 			val ecorePackage = genPackage.getEcorePackage
-			if (ecorePackage === null || ecorePackage.eIsProxy)
+			if (ecorePackage === null || ecorePackage.eIsProxy) {
 				throw new RuntimeException('Unresolved proxy: ' + ecorePackage + ' in ' + genModel.eResource.URI)
-			if (nsURI == ecorePackage.nsURI)
+			}
+			if (nsURI == ecorePackage.nsURI) {
 				return genPackage
+			}
 		}
 		throw new RuntimeException('No GenPackage for NsURI ' + nsURI + ' found in ' + genModel.eResource.URI)
 	}
@@ -470,14 +480,16 @@ class EMFGeneratorFragment2 extends AbstractXtextGeneratorFragment {
 			result.put(usedEPackage, loadedEPackage)
 			for (usedClassifier : usedEPackage.EClassifiers) {
 				val loadedClassifier = loadedEPackage.getEClassifier(usedClassifier.name)
-				if (loadedClassifier === null)
+				if (loadedClassifier === null) {
 					throw new RuntimeException("Cannot find classifier '" + usedClassifier.name + "' in loaded EPackage from " + loadedEPackage.eResource.URI)
+				}
 				result.put(usedClassifier, loadedClassifier)
 			}
 			for (usedNestedPackage : usedEPackage.ESubpackages) {
 				val loadedNestedPackage = loadedEPackage.ESubpackages.findFirst[name == usedNestedPackage.name]
-				if (loadedNestedPackage !== null)
+				if (loadedNestedPackage !== null) {
 					putMappingData(result, usedNestedPackage, loadedNestedPackage)
+				}
 			}
 		}
 	}
@@ -495,13 +507,15 @@ class EMFGeneratorFragment2 extends AbstractXtextGeneratorFragment {
 						if (reference.isMany) {
 							val values = current.eGet(reference) as List<EObject>
 							for (value : values) {
-								if (eNamedElementMapping.containsKey(value))
+								if (eNamedElementMapping.containsKey(value)) {
 									EcoreUtil.replace(current, reference, value, eNamedElementMapping.get(value))
+								}
 							}
 						} else {
 							val value = current.eGet(reference) as EObject
-							if (eNamedElementMapping.containsKey(value))
+							if (eNamedElementMapping.containsKey(value)) {
 								EcoreUtil.replace(current, reference, value, eNamedElementMapping.get(value))
+							}
 						}
 					}
 				}
@@ -526,10 +540,12 @@ class EMFGeneratorFragment2 extends AbstractXtextGeneratorFragment {
 		genModel.initialize(packs)
 		for (genPackage : genModel.getGenPackages) {
 			genPackage.basePackage = grammar.basePackage
-			if (suppressLoadInitialization)
+			if (suppressLoadInitialization) {
 				genPackage.loadInitialization = false
-			if (!language.fileExtensions.isEmpty && packs.contains(genPackage.getEcorePackage))
+			}
+			if (!language.fileExtensions.isEmpty && packs.contains(genPackage.getEcorePackage)) {
 				genPackage.fileExtensions = language.fileExtensions.join(',')
+			}
 		}
 		val referencedEPackages = getReferencedEPackages(packs)
 		val usedGenPackages = getGenPackagesForPackages(genModel, referencedEPackages)
@@ -619,12 +635,14 @@ class EMFGeneratorFragment2 extends AbstractXtextGeneratorFragment {
 			while (iterator.hasNext) {
 				val obj = iterator.next
 				for (crossRef : obj.eCrossReferences) {
-					if (crossRef.eIsProxy)
+					if (crossRef.eIsProxy) {
 						LOG.error("Proxy '" + (crossRef as InternalEObject).eProxyURI + "' could not be resolved")
+					}
 					else {
 						val p = EcoreUtil2.getContainerOfType(crossRef, EPackage)
-						if (p !== null)
+						if (p !== null) {
 							result.add(p)
+						}
 					}
 				}
 			}
@@ -641,8 +659,9 @@ class EMFGeneratorFragment2 extends AbstractXtextGeneratorFragment {
 	protected def List<GenPackage> getGenPackagesForPackages(GenModel existingGenModel, Collection<EPackage> packs) {
 		val result = <GenPackage>newArrayList
 		for (EPackage pkg : packs) {
-			if (!existingGenModel.genPackages.exists[getEcorePackage?.nsURI == pkg.nsURI])
+			if (!existingGenModel.genPackages.exists[getEcorePackage?.nsURI == pkg.nsURI]) {
 				result.add(getGenPackage(pkg, existingGenModel.eResource.resourceSet))
+			}
 		}
 		Collections.sort(result, [ o1, o2 |
 			EcoreUtil.getURI(o1).toString.compareTo(EcoreUtil.getURI(o2).toString)
@@ -658,8 +677,9 @@ class EMFGeneratorFragment2 extends AbstractXtextGeneratorFragment {
 					for (entry : EcorePlugin.platformResourceMap.entrySet) {
 						val newPrefix = URI.createURI('platform:/resource/' + entry.key + '/')
 						val uri2 = uri.replacePrefix(entry.value, newPrefix)
-						if (uri2 !== null)
+						if (uri2 !== null) {
 							return super.deresolve(uri2)
+						}
 					}
 				}
 				return super.deresolve(uri)
@@ -685,25 +705,29 @@ class EMFGeneratorFragment2 extends AbstractXtextGeneratorFragment {
 		generator.input = genModel
 		val diagnostic = generator.generate(genModel, GenBaseGeneratorAdapter.MODEL_PROJECT_TYPE, new BasicMonitor)
 		
-		if (diagnostic.severity != Diagnostic.OK)
+		if (diagnostic.severity != Diagnostic.OK) {
 			LOG.warn(diagnostic)
+		}
 		
 		if (generateEdit) {
 			val editDiag = generator.generate(genModel, GenBaseGeneratorAdapter.EDIT_PROJECT_TYPE, new BasicMonitor)
-			if (editDiag.severity != Diagnostic.OK)
+			if (editDiag.severity != Diagnostic.OK) {
 				LOG.warn(editDiag)
+			}
 		}
 		
 		if (generateEditor) {
 			val editorDiag = generator.generate(genModel, GenBaseGeneratorAdapter.EDITOR_PROJECT_TYPE, new BasicMonitor)
-			if (editorDiag.severity != Diagnostic.OK)
+			if (editorDiag.severity != Diagnostic.OK) {
 				LOG.warn(editorDiag)
+			}
 		}
 	}
 
 	private def void updateBuildProperties() {
-		if (!updateBuildProperties || modelPluginID !== null || projectConfig.runtime.manifest === null)
+		if (!updateBuildProperties || modelPluginID !== null || projectConfig.runtime.manifest === null) {
 			return;
+		}
 		val buildPropertiesPath = projectConfig.runtime.root.path + '/build.properties'
 		val buildPropertiesFile = new File(buildPropertiesPath)
 		if (buildPropertiesFile.exists) {

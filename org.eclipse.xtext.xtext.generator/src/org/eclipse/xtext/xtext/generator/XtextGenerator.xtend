@@ -145,8 +145,9 @@ class XtextGenerator extends AbstractWorkflowComponent2 {
 		val encoding = grammarEncoding ?: configuration.code.encoding
 		if (serviceProvider !== null && encoding !== null) {
 			val encodingProvider = serviceProvider.get(IEncodingProvider)
-			if (encodingProvider instanceof IEncodingProvider.Runtime)
+			if (encodingProvider instanceof IEncodingProvider.Runtime) {
 				encodingProvider.defaultEncoding = encoding
+			}
 		}
 	}
 	
@@ -212,8 +213,9 @@ class XtextGenerator extends AbstractWorkflowComponent2 {
 	}
 	
 	protected def generateExecutableExtensionFactory(IXtextGeneratorLanguage language) {
-		if (projectConfig.eclipsePlugin.srcGen !== null)
+		if (projectConfig.eclipsePlugin.srcGen !== null) {
 			templates.createEclipsePluginExecutableExtensionFactory(language, languageConfigs.head).writeTo(projectConfig.eclipsePlugin.srcGen)
+		}
 	}
 	
 	protected def generateManifests() {
@@ -231,7 +233,6 @@ class XtextGenerator extends AbstractWorkflowComponent2 {
 			
 			if (manifest === null || metaInf === null) {
 				manifestIter.remove()
-				
 			} else {
 				if (manifest.activator === null && manifest === projectConfig.eclipsePlugin.manifest) {
 					manifest.activator = naming.eclipsePluginActivator
@@ -286,8 +287,9 @@ class XtextGenerator extends AbstractWorkflowComponent2 {
 				metaInf.generateFile(manifest.path, new ByteArrayInputStream(out.toByteArray))
 			}
 		} finally {
-			if (in !== null)
+			if (in !== null) {
 				in.close()
+			}
 		}
 	}
 	
@@ -306,8 +308,9 @@ class XtextGenerator extends AbstractWorkflowComponent2 {
 	}
 	
 	protected def void generateActivator() {
-		if (projectConfig.eclipsePlugin.srcGen !== null && !languageConfigs.empty)
+		if (projectConfig.eclipsePlugin.srcGen !== null && !languageConfigs.empty) {
 			templates.createEclipsePluginActivator(projectConfig, languageConfigs).writeTo(projectConfig.eclipsePlugin.srcGen)
+		}
 	}
 	
 	protected def void generatePluginXmls() {

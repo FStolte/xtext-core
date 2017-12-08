@@ -844,6 +844,7 @@ public class PsiAntlrGrammarGenerator extends AbstractAntlrGrammarWithActionsGen
       _builder.newLine();
       String __assignmentEbnf = super._assignmentEbnf(it, assignment, options, supportActions);
       _builder.append(__assignmentEbnf);
+      _builder.newLineIfNotEmpty();
       _xifexpression = _builder.toString();
     } else {
       _xifexpression = super._assignmentEbnf(it, assignment, options, supportActions);

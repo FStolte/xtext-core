@@ -79,8 +79,9 @@ class IdeaPluginGenerator extends AbstractStubGeneratingFragment {
 	}
 
 	override generate() {
-		if (!projectConfig.ideaPlugin.enabled)
+		if (!projectConfig.ideaPlugin.enabled) {
 			return;
+		}
 		val fileExtension = language.getFileExtensions().head
 		val grammar = language.grammar
 

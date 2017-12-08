@@ -96,8 +96,9 @@ class GeneratorFragment2 extends AbstractStubGeneratingFragment {
 			new GuiceModuleAccess.BindingFactory()
 				.addTypeToType(IGenerator2.typeRef, language.grammar.generatorStub)
 				.contributeTo(language.runtimeGenModule)
-			if (projectConfig.runtime.manifest !== null)
+			if (projectConfig.runtime.manifest !== null) {
 				projectConfig.runtime.manifest.requiredBundles += 'org.eclipse.xtext.xbase.lib;bundle-version="'+projectConfig.runtime.xbaseLibVersionLowerBound+'"'
+			}
 
 			if (generateXtendStub) {
 				doGenerateXtendStubFile
@@ -106,22 +107,28 @@ class GeneratorFragment2 extends AbstractStubGeneratingFragment {
 			}
 		}
 		if (isGenerateStub || isGenerateJavaMain) {
-			if (projectConfig.runtime.manifest !== null)
+			if (projectConfig.runtime.manifest !== null) {
 				projectConfig.runtime.manifest.exportedPackages += language.grammar.generatorStub.packageName
+			}
 		}
 		
-		if (isGenerateJavaMain)
+		if (isGenerateJavaMain) {
 			doGenerateJavaMain
-		if (isGenerateXtendMain)
+		}
+		if (isGenerateXtendMain) {
 			doGenerateXtendMain
-		if (isGenerateMwe)
+		}
+		if (isGenerateMwe) {
 			doGenerateMweFile
+		}
 		
 		contributeEclipsePluginGuiceBindings
-		if (projectConfig.eclipsePlugin.manifest !== null)
+		if (projectConfig.eclipsePlugin.manifest !== null) {
 			projectConfig.eclipsePlugin.manifest.requiredBundles += 'org.eclipse.xtext.builder'
-		if (projectConfig.eclipsePlugin.pluginXml !== null)
+		}
+		if (projectConfig.eclipsePlugin.pluginXml !== null) {
 			contributeEclipsePluginExtensions
+		}
 	}
 	
 	protected def contributeEclipsePluginGuiceBindings() {

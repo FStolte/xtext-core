@@ -22,8 +22,9 @@ class CompositeGeneratorFragment2 implements IXtextGeneratorFragment {
 	val List<IXtextGeneratorFragment> fragments = newArrayList
 
 	def void addFragment(IXtextGeneratorFragment fragment) {
-		if (fragment === this)
+		if (fragment === this) {
 			throw new IllegalArgumentException
+		}
 		this.fragments.add(fragment)
 	}
 
